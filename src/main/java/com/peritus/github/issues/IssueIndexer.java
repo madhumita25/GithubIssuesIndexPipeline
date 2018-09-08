@@ -1,32 +1,34 @@
-//package io.github.psgs.issuesdownload;
 package com.peritus.github.issues;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.Map.Entry;
-import java.util.StringTokenizer;
 import java.io.ObjectOutputStream;
+
+import java.util.List;
+import java.util.HashMap;
+import java.util.StringTokenizer;
+
+
 //import com.google.common.collect.TreeMultimap;
 //import com.google.common.collect.SortedSetMultimap;
+//import java.util.SortedMap;
+//import java.util.TreeMap;
+
 /**
  * Issue Indexing related operations
  * @author bharde
  *
  */
 public class IssueIndexer {
+	// TODO: Try using slightly sophisticated map structures here
 	//SortedMap<String, String> keywordMap  = new TreeMap<String, String>();
-	//public static HashMap<String, HashMap<String, Integer>> keywordMap = new HashMap<String, HashMap<String, Integer>>();
+
 	public static HashMap<String, HashMap<String, Integer>> keywordMap;
 	/**
 	 * Index already Downloaded Issues
@@ -34,6 +36,10 @@ public class IssueIndexer {
 	 * @param args: Directory containing downloaded issue files
 	 */
 	public static void main(String[] args) {
+		if ( args.length < 1) {
+			System.out.println("Usage: IssueIndexer <ISSUES_FOLDER>"); 
+			System.exit(1);
+		}
 		loadIndex("keywordMap.ser");
 		File folder = new File(args[0]);
 		try {
@@ -80,11 +86,15 @@ public class IssueIndexer {
 	 * Load Index in keywordMap
 	 * @param index_file: input index file
 	 */
-	public static void loadIndex(String index_file) {
+	public static void loadIndex(String index_file)  {
 		keywordMap = new HashMap<String, HashMap<String, Integer>>();
 		try {
 			//File toRead=new File(this.getClass().getResource("keywordMap.txt").getPath());
 			File toRead=new File(index_file);
+
+			if ( !toRead.exists() || toRead.length() == 0 ) {
+				return;
+			}
 
 			FileInputStream fis=new FileInputStream(toRead);
 			ObjectInputStream ois=new ObjectInputStream(fis);
