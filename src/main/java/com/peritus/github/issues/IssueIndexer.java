@@ -20,7 +20,7 @@ import java.io.ObjectOutputStream;
 //import com.google.common.collect.TreeMultimap;
 //import com.google.common.collect.SortedSetMultimap;
 /**
- * Issue Indeing related operations
+ * Issue Indexing related operations
  * @author bharde
  *
  */
@@ -47,11 +47,11 @@ public class IssueIndexer {
 			}
 			persistIndex("keywordMap.ser");
 		} catch (IOException ex) {
-            System.out.println("An IOException has occurred!");
-            ex.printStackTrace();
+			System.out.println("An IOException has occurred!");
+			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Read all of file content in a string
 	 * @param fileName: input file
@@ -59,23 +59,23 @@ public class IssueIndexer {
 	 * @throws IOException
 	 */
 	public static String readFile(String fileName) throws IOException {
-		    BufferedReader br = new BufferedReader(new FileReader(fileName));
-		    try {
-		        StringBuilder sb = new StringBuilder();
-		        String line = br.readLine();
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		try {
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
 
-		        while (line != null) {
-		            sb.append(line);
-		            sb.append(" ");
-		            //sb.append("\n");
-		            line = br.readLine();
-		        }
-		        return sb.toString();
-		    } finally {
-		        br.close();
-		    }
-    }
-	
+			while (line != null) {
+				sb.append(line);
+				sb.append(" ");
+				//sb.append("\n");
+				line = br.readLine();
+			}
+			return sb.toString();
+		} finally {
+			br.close();
+		}
+	}
+
 	/**
 	 * Load Index in keywordMap
 	 * @param index_file: input index file
@@ -85,7 +85,7 @@ public class IssueIndexer {
 		try {
 			//File toRead=new File(this.getClass().getResource("keywordMap.txt").getPath());
 			File toRead=new File(index_file);
-    	
+
 			FileInputStream fis=new FileInputStream(toRead);
 			ObjectInputStream ois=new ObjectInputStream(fis);
 
@@ -93,13 +93,13 @@ public class IssueIndexer {
 
 			ois.close();
 			fis.close();
-             
+
 		} catch ( IOException ex) {
-        System.out.println("An IOException occurred while reading the Index!");
-        ex.printStackTrace();
+			System.out.println("An IOException occurred while reading the Index!");
+			ex.printStackTrace();
 		} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -111,52 +111,52 @@ public class IssueIndexer {
 		try {
 			File fileMap=new File(index_file);
 			FileOutputStream fos=new FileOutputStream(fileMap);
-	
+
 			ObjectOutputStream oos=new ObjectOutputStream(fos);
 
 			oos.writeObject(keywordMap);
 			oos.flush();
 			oos.close();
 		} catch (IOException ex) {
-            System.out.println("An IOException has occurred!");
-            ex.printStackTrace();
+			System.out.println("An IOException has occurred!");
+			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Index an Issue
 	 * @param id: issue number
 	 * @param body: body of the issue
 	 */
 	public static void IndexIssue(int id, String body) {
-			
-		body = body.replaceAll("[^A-Za-z ]","").toLowerCase();
+
+		body = body.replaceAll("[^A-Za-z ]"," ").toLowerCase();
 		List<String> stopWords = StopWords.getWords();
 		for (String word : stopWords) {
-	         body = body.replaceAll("\\b" + word + "\\b", "");
-	    }
-		
+			body = body.replaceAll("\\b" + word + "\\b", "");
+		}
+
 		String issue_id = Integer.toString(id);
-		
+
 		StringTokenizer st = new StringTokenizer(body); 
 		while (st.hasMoreTokens()) {
-			
+
 			String keyword = st.nextToken();
-			
+
 			// TODO: Stem the words
 			//String keyword = Stemmer.stem(keyword_unstemmed);
-			
+
 			if (keywordMap.containsKey(keyword)) {
 				HashMap<String, Integer> innerMap = keywordMap.get(keyword);
 				if (!innerMap.containsKey(issue_id)) {
-			    	keywordMap.get(keyword).put(issue_id, 1);
+					keywordMap.get(keyword).put(issue_id, 1);
 				} else {
 					innerMap.put(issue_id, innerMap.get(issue_id) + 1);
 				}
-		     } else {
-		    	 keywordMap.put(keyword, new HashMap<String, Integer>());
-				 keywordMap.get(keyword).put(issue_id, 1);
-		     }
+			} else {
+				keywordMap.put(keyword, new HashMap<String, Integer>());
+				keywordMap.get(keyword).put(issue_id, 1);
+			}
 		}
 	}
 }
