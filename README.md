@@ -23,6 +23,7 @@ E.g. For hourly exeuction, add the line
 * Maven 3 (configure maven proxy if needed)
 
 ### Build
+1. Get a personal access token to access github developer API and put it in Config.java
 1. mvn package 
 2. Follow Deployment steps..
 
