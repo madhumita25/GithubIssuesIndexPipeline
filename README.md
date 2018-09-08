@@ -54,13 +54,13 @@ Currently only bodies of the issues are being stored. Makes sense to store all r
 ### Processing:
 Would be ideal to use something like Spark for processing, start from Spark's signature wordcount and leverage map/reduce operations to process/order issues.
 
-### Natural Language Processing
+### Natural Language Processing:
 Current functionality has only basic cleanup (stop word removal etc..) Varierty of external libraries can be used to enhance the extraction of keywords. (e.g. spark MLlib, Lucene)
 
-### Index
+### Index:
 Currently the index is a nested Hashmap that is stored as a flat file.  Make sense to move to a more effcient index like Solr or Redis.
 
-### Proximity heuristic & Backend DB
+### Proximity heuristic & Backend DB:
 If an absolute metric for relevance is desired (e.g. #occurrences of keyword - like in this usecase), even something like SQL (especially coupled with Spark processing) makes sense. On the other hand for an approximate match, TF-IDF libraries (again already part of Spark MLlib), K-V stores etc. can be used.  
 
 ### Streaming:
