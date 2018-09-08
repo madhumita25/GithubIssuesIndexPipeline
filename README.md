@@ -30,14 +30,7 @@ E.g. For hourly exeuction, add the line
 ```
 java -cp /home/ubuntu/GithubIssuesIndexPipeline-1.0-RELEASE.jar com.peritus.github.issues.IssuesIngest <RepoOwner> <RepoName> <PATH_TO_STORE_ISSUES> <PATH_TO_PREEXISTING_INDEX_FILE> <PATH_TO_LAST_PROCESSED_FILE>
 ```
-
-* Download and Index Issues
-```
-#java -cp GithubIssuesIndexPipeline-1.0-RELEASE.jar com.peritus.github.issues.IssuesDownloadIndex <RepoOwner> <RepoName>
-```
-Note: May need to be re-built based on closed/open issue state.
-
-* Index issues
+* Index already downloaded issues
 ```
 #java -cp GithubIssuesIndexPipeline-1.0-RELEASE.jar com.peritus.github.issues.IssueIndexer <ISSUES_FOLDER>
 ```
